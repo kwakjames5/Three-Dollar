@@ -59,4 +59,6 @@ int main()
 	int arraySize = sizeof(inputArray)/sizeof(int);
 
 	twoSum(inputArray, target, arraySize);
+
+	return 0;
 }
