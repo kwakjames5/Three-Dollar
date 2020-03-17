@@ -1,9 +1,22 @@
+///////////////////////////////////////////////////////////////////////////////////
+
+// Function: Two sum
+
+// Description : Parses through an array and looks for exactly one pair of elements that add up to a given target
+
+// Date : 03/16/2020
+
+// input: [2, 7, 11, 15]
+
+// output: [0, 1]
+
+
 #include <iostream>
 
 
 // vector<int>
 void twoSum(int nums[], int target, int size) 
-{
+{	
 	// Flag to check completion status
 	bool completeFlag = false;
 
