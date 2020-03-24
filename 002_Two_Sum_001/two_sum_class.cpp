@@ -9,6 +9,36 @@ Solution::Solution()
 void Solution::twoSum(int nums[], int target, int size)
 {
 	bool completeFlag = false;
+	int start = 0;
+	int end = size;
+
+	while(completeFlag == false)
+	{
+		if(nums[start] + nums[end] > target)
+		{
+			end--;
+		}
+
+		if(nums[start] + nums[end] < target)
+		{
+			start++;
+		}
+
+		if(nums[start] + nums[end] == target)
+		{
+			this->output1 = start;
+			this->output2 = end;
+			completeFlag = true;
+		}
+
+		if((start > size/2) || (end < size/2))
+		{
+			completeFlag = true;
+		}
+	}
+
+	/*
+	bool completeFlag = false;
 
 	for(int i = 0; i < size; i++)
 	{
@@ -40,6 +70,7 @@ void Solution::twoSum(int nums[], int target, int size)
 			break;
 		}
 	}
+	*/
 }
 
 int main()
