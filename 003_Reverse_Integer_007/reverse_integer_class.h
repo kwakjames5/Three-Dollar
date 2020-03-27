@@ -8,6 +8,7 @@ public:
 	Solution();
 
 	int reverse(int x);	
+	std::string stringReverse(int x);
 };
 
 #endif
