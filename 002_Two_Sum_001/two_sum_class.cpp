@@ -11,7 +11,8 @@ void Solution::twoSum(int nums[], int target, int size)
 	int start = 0;
 	int end = size;
 
-	while((start < size/2) || (end > size/2))
+	//while((start < size/2) || (end > size/2))
+	while(start < end )
 	{
 		if(nums[start] + nums[end] > target)
 		{
