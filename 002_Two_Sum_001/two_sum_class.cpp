@@ -8,11 +8,10 @@ Solution::Solution()
 // void Solution::twoSum(Two_sum* two_sum_object)
 void Solution::twoSum(int nums[], int target, int size)
 {
-	bool completeFlag = false;
 	int start = 0;
 	int end = size;
 
-	while(completeFlag == false)
+	while((start < size/2) || (end > size/2))
 	{
 		if(nums[start] + nums[end] > target)
 		{
@@ -28,16 +27,15 @@ void Solution::twoSum(int nums[], int target, int size)
 		{
 			this->output1 = start;
 			this->output2 = end;
-			completeFlag = true;
-		}
-
-		if((start > size/2) || (end < size/2))
-		{
-			completeFlag = true;
+			
+			break;
 		}
 	}
+}
 
-	/*
+/*
+void Solution::twoSum(int nums[], int target, int size)
+{	
 	bool completeFlag = false;
 
 	for(int i = 0; i < size; i++)
@@ -70,8 +68,8 @@ void Solution::twoSum(int nums[], int target, int size)
 			break;
 		}
 	}
-	*/
 }
+*/
 
 int main()
 {
