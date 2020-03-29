@@ -108,9 +108,27 @@ SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data,
 int main()
 {
     ofstream fout("output.txt", std::ofstream::out);
+    ifstream ifile("input.txt", std::ifstream::in);
+
+    int llist_count;
+    ifile >> llist_count;
 
     SinglyLinkedList* llist = new SinglyLinkedList();
 
+    for(int i = 0; i < llist_count; i++)
+    {
+        int llist_item;
+        ifile >> llist_item;
+        llist->insert_node(llist_item);
+    }
+
+    int data;
+    ifile >> data;
+
+    int position;
+    ifile >> position;
+
+    /*
     int llist_count;
     cin >> llist_count;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -130,6 +148,7 @@ int main()
     int position;
     cin >> position;
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    */
 
     SinglyLinkedListNode* llist_head = insertNodeAtPosition(llist->head, data, position);
 
@@ -137,7 +156,7 @@ int main()
     fout << "\n";
 
     free_singly_linked_list(llist_head);
-
+    
     fout.close();
 
     return 0;
