@@ -107,7 +107,7 @@ SinglyLinkedListNode* insertNodeAtPosition(SinglyLinkedListNode* head, int data,
 
 int main()
 {
-    ofstream fout(getenv("OUTPUT_PATH"));
+    ofstream fout("output.txt", std::ofstream::out);
 
     SinglyLinkedList* llist = new SinglyLinkedList();
 
