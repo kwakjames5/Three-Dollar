@@ -1,4 +1,6 @@
-fio pass=2 fail=2
-ung pass=1 fail=3
-gra pass=2 fail=2
-cli pass=1 fail=3
+acd pass:1 fail:1
+cli pass:1 fail:3
+fio pass:2 fail:2
+gra pass:2 fail:2
+oip pass:1 fail:0
+ung pass:1 fail:3
