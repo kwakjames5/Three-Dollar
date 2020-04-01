@@ -1,0 +1,16 @@
+fio,a.png,fail
+fio,c.jpg,pass
+ung,q.jpg,fail
+ung,q.jpg,fail
+gra,q.jpg,pass
+cli,q.jpg,fail
+cli,q.jpg,fail
+gra,q.jpg,pass
+fio,q.jpg,pass
+ung,q.jpg,fail
+fio,q.jpg,fail
+cli,q.jpg,pass
+cli,q.jpg,fail
+ung,q.jpg,pass
+gra,q.jpg,fail
+gra,q.jpg,fail
