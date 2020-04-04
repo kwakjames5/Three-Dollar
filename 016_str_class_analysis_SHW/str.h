@@ -23,12 +23,20 @@ public:
    */
   Str(const char* s);
 
+  // ADDED NEW FUNCTION
+  // String constructor
+  Str(const Str& s);
+
   
   /**
    * Assignment operator
    * If s is NULL, set this to a blank string ("")
    */
   Str& operator=(const char* s);
+
+  // ADDED NEW FUNCTION
+  // Assignment operator for when the other side is a Str object, not a char*
+  Str& operator=(const Str& s);
 
   
   /**

@@ -41,13 +41,22 @@ Str::Str(const char* s)
 
 	// initialize the data_ as a char* with size of length + 1
 	// this 1 is so a '\0' (end character) can be added to the end of the string
-	data_ = new char[strlen(s) + 1];
+	data_ = new char[strlen(s)];
 
 	//run a for loop for the duration of the newly initialized this's size_
 	strcpy(this->data_, s);
 
 	// set the last index in this's data_ as the end character
-	this->data_[this->size_ + 1] = '\0';
+	//this->data_[this->size_ + 1] = '\0';
+}
+
+
+// NEW FUNCTION
+Str::Str(const Str& s)
+{
+	size_ = s.size();
+	data_ = new char[s.size()];
+	strcpy(data_, s.data_);
 }
 
 Str& Str::operator=(const char* s)
@@ -78,6 +87,24 @@ Str& Str::operator=(const char* s)
 	// is that the address of this?
 	return *this;
 }
+
+// NEW FUNCTION
+Str& Str::operator=(const Str& s)
+{
+	char* temp = new char(this->size_ + s.size());
+
+	if(this->size_ > 0)
+	{	
+		delete [] data_;
+	}
+
+	this->size_ = s.size();
+	strcpy(temp, s.data_);
+	this->data_ = temp;
+
+	return *this;
+}
+
 
 Str& Str::operator+=(const Str& s)
 {
@@ -152,7 +179,7 @@ char& Str::operator[](unsigned int i)
 
 	// if the index that is in the [] is bigger than this's size minus the 1 for the end character
 	// that means there is no index we can refer to. throw a out of range error
-	if(i > unsigned(this->size_ - 1))
+	if(i > unsigned(this->size_))
     {
     	// throws into error message if out of range
         throw std::out_of_range("out of range");
@@ -168,7 +195,7 @@ char const & Str::operator[](unsigned int i) const
 {
 	// CHECK THIS ONE
 	// same thing as above, but the char that is returned from this is const (?)
-	if(i > unsigned(this->size_ - 1))
+	if(i > unsigned(this->size_))
     {
         throw std::out_of_range("out of range");
     }
@@ -178,10 +205,24 @@ char const & Str::operator[](unsigned int i) const
 	} 
 }
 
+// FIX THIS ONE
 Str Str::operator+(const char* rhs) const
 {
-	// initialize a char* array with the size of this, the rhs char* and 1 for the end character
-	char* temp = new char[this->size_ + strlen(rhs) + 1];
+	/*char* temp = this->data_;
+
+	temp = new char[this->size_ + strlen(rhs)];
+	size_ += strlen(rhs);
+
+	strcat(this->data_, temp);
+	strcat(this->data_, rhs);
+
+	delete [] temp;
+
+	return this;
+  	*/
+
+  	// initialize a char* array with the size of this, the rhs char* and 1 for the end character
+	/*char* temp = new char[this->size_ + strlen(rhs)];
 
 	// concatenates this and rhs into the char* temp we just initialized
   	strcat(temp, this->data_);
@@ -192,17 +233,19 @@ Str Str::operator+(const char* rhs) const
   	Str c1(temp);
 
   	// deletes the temporarily created char* array to avoid mem leaks
-  	delete [] temp;
+  	//delete [] temp;
 
   	// return the fully concatenated string
-  	return c1;
+  	return c1;*/
+
+  	return Str(this->data_) += Str(rhs);
 }
 
 Str Str::operator+(const Str& rhs) const
-{
+{	
 	// CHECK THIS ONE
 	// same thing as above, but the Str that is returned is constant and cannot be changed (?)
-	char* temp = new char[this->size_ + rhs.size_ + 1];
+	char* temp = new char[this->size_ + rhs.size_];
 
 	//concatenates this and rhs into temp
   	strcat(temp, this->data_);
@@ -213,6 +256,7 @@ Str Str::operator+(const Str& rhs) const
   	delete [] temp;
 
   	return c1;
+  	
 }
 
 bool Str::operator==(const Str& rhs)
