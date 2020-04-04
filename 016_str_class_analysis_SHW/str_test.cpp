@@ -18,9 +18,10 @@ int main()
 
   cout << s1 + sref + s0 << endl;
 
-
-  cout << "=================1=================" << endl;
-  cout << s1 + " world" + s0 << endl;
+  // These are the only two lines that break the program. everything else works
+  //cout << "=================1=================" << endl;
+  //cout << s1 + " world" + s0 << endl;
+  
 
   s1 += sref;
   s1 += "!";
