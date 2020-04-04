@@ -44,12 +44,7 @@ Str::Str(const char* s)
 	data_ = new char[strlen(s) + 1];
 
 	//run a for loop for the duration of the newly initialized this's size_
-	for(int i = 0; i < this->size_; i++)
-	{
-		// set each index of data_ to equal the indexes of 's'
-		// AKA copy the string
-		data_[i] = s[i];
-	}
+	strcpy(this->data_, s);
 
 	// set the last index in this's data_ as the end character
 	this->data_[this->size_ + 1] = '\0';
@@ -61,11 +56,14 @@ Str& Str::operator=(const char* s)
 	// assigns all of this's information to be the same as char* s
 	// FORMAT: this = s;
 
+	// delete any data_ that is in this at the moment so we can reinitialize it to s's data_
+	if(this->size_ > 0)
+	{	
+		delete [] data_;
+	}
+
 	// change the size_ of this to equal the size of 's'
 	this->size_ = strlen(s);
-
-	// delete any data_ that is in this at the moment so we can reinitialize it to s's data_
-	delete [] data_;
 
 	// newly initialize the data_ of this as a dynamically allocated char* array with size of s, which has already been stored into this->size
 	this->data_ = new char[this->size_ + 1];
@@ -255,14 +253,9 @@ bool Str::operator<(const Str& rhs)
 // this means they are able to be accessed and overloaded from istream to str
 std::istream& operator>>(std::istream& istr, Str& s)
 {
-  // create a temporary string
-  std::string stemp;
 
   // take whatever is at the top of istr and put it into the new temporary string
-  istr >> stemp;
-
-  // the s on the other side of this >> operator is now being set to the address of the new and modified stemp
-  s = stemp.c_str();
+  istr.getline(s.data_, sizeof(s.data_));
 
   // since this is a istream function, return the istream file
   return istr;
