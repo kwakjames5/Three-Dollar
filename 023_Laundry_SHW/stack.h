@@ -56,7 +56,7 @@ void Stack<T>::pop()
 template <typename T>
 T const & Stack<T>::top() const
 {
-	return Deque<T>::operator[](size() - 1);
+	return Deque<T>::operator[](0);
 }
 
 #endif

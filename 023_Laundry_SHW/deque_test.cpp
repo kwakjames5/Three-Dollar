@@ -21,12 +21,11 @@ int main()
 
 	cout << "size:" << test.size() << endl;
 	
-	for(int i = 5; i > 0; i--)
+	for(int i = 1; i < 6; i++)
 	{
-		test.push_back(i);
+		test.push_front(i);
 	}
 	
-
 	for(unsigned int i = 0; i < test.size(); i++)
 	{
 		cout << test[i] << endl;
@@ -57,7 +56,6 @@ int main()
 	}
 
 	cout << "size:" << test.size() << endl;
-
 
 	return 0;
 }

@@ -101,8 +101,8 @@ class Deque
    */
   size_t size_;
   size_t capacity_;
-  size_t head_;
-  size_t tail_;
+  int head_;
+  int tail_;
   T* data_;
 
 };
@@ -116,11 +116,11 @@ template <typename T>
 Deque<T>::Deque()
 {
   // creates new deque with default capacity (5)
-  size_ = 0;
-  capacity_ = 5;
-  head_ = 0;
-  tail_ = 0;
-  data_ = new T[capacity_];
+  this->size_ = 0;
+  this->capacity_ = 5;
+  this->head_ = 0;
+  this->tail_ = 0;
+  this->data_ = new T[this->capacity_];
 }
 
 // WORKS
@@ -129,10 +129,10 @@ Deque<T>::Deque(size_t capacity)
 :capacity_(capacity)
 {
   // creates new deque with specific capacity
-  size_ = 0;
-  head_ = 0;
-  tail_ = 0;
-  data_ = new T[capacity_];
+  this->size_ = 0;
+  this->head_ = 0;
+  this->tail_ = 0;
+  this->data_ = new T[capacity];
 }
 
 // WORKS
@@ -141,7 +141,7 @@ Deque<T>::~Deque()
 {
   // deletes data
   // this needs to be done since data_ is the only variable in deque that is dynamically allocated
-  delete [] data_;
+  delete [] this->data_;
 }
 
 // WORKS
@@ -149,7 +149,7 @@ template <typename T>
 size_t Deque<T>::size() const
 {
   // returns size
-  return size_;
+  return this->size_;
 }
 
 // WORKS
@@ -157,7 +157,7 @@ template <typename T>
 bool Deque<T>::empty() const
 {
   // checks if deque is empty
-  if(size_ == 0)
+  if(this->size_ == 0)
   {
     return true;
   }
@@ -173,16 +173,36 @@ bool Deque<T>::empty() const
 template <typename T>
 T& Deque<T>::operator[](size_t i)
 {
+  // modified_idx is the index that i wants on this circular array
+  // head_ + i indicates the distance from head_ that we are looking for
+  // the added capacity_ and the % capacity_ serve to make i work on a circular array
+
+  // NOTE: Not entirely sure what the capacity_ and %capacity_ do
+  // found the computations from old summer hw file, I think I got it from a teacher 
+  // I am not sure exactly what it does but I have a rough idea and it works
+
+  size_t modified_idx = (head_ + i + capacity_) % capacity_;
+
   // returns the i-th element fron head
-  return data_[(head_ + i)];
+  return this->data_[modified_idx];
 }
 
 // FIXED
 template <typename T>
 T const & Deque<T>::operator[](size_t i) const
 {
-  // returns i-th element from head
-  return data_[(head_ + i)];
+  // modified_idx is the index that i wants on this circular array
+  // head_ + i indicates the distance from head_ that we are looking for
+  // the added capacity_ and the % capacity_ serve to make i work on a circular array
+
+  // NOTE: Not entirely sure what the capacity_ and %capacity_ do
+  // found the computations from old summer hw file, I think I got it from a teacher 
+  // I am not sure exactly what it does but I have a rough idea and it works
+
+  size_t modified_idx = (head_ + i + capacity_) % capacity_;
+
+  // returns the i-th element fron head
+  return this->data_[modified_idx];
 }
 
 // FIXED
@@ -190,44 +210,39 @@ template <typename T>
 void Deque<T>::push_back(const T& item)
 {
   // if the capacity of the deque has been met, specific operations must be done to set up a new deque with a larger capacity
-  if(size_ == capacity_)
+  if(this->size_ == this->capacity_)
   {
     // creates a temporary T* with a capacity that has been upgraded by 5
     // this T* has more room for more elements to be pushed into
-    T* temp = new T[capacity_ + 5]; 
+    size_t new_capacity_ = this->capacity_ + 5;
+    T* new_data_ = new T[new_capacity_]; 
 
     // copy old deque data into temporary T* temp
     // run for the capacity_, which is the old size since we have not updated it yet
-    for(unsigned int i = 0; i < capacity_; i++)
+    for(int i = this->head_; i < this->tail_; i++)
     {
-      temp[i] = data_[(head_ + i)];
+      // two new indexes are defined for the copying of data_ into new_data_
+      // since data_ and new_data_ have different sized capacities, they have different indexes based on their capacities and the circular nature of the deque
+      // for these reasons, two indexes must be found, one for the old capacity for data_ and one for the new capacity for new_data_
+      size_t old_idx = (i + this->capacity_) % this->capacity_;
+      size_t new_idx = (i + new_capacity_) % new_capacity_;
+      new_data_[new_idx] = this->data_[old_idx];
     }
 
     // set data_ to the temp T*, which is basically the same thing except with a larger capacity
     // also increment capacity_ up by 5 since that has been updataed in data_ now
-    data_ = temp;
-    capacity_ += 5;
+    this->data_ = new_data_;
+    this->capacity_ = new_capacity_;
   }
 
-  // this is for when the deque is empty
-  if(size_ == 0)
-  {
-    // set the tail_ as the item since this is push_back
-    // update size_ by 1 since we just pushed an item
-    // no need to touch capacity since we are not at capacity yet
-    data_[tail_] = item;
-    size_++;
-  }
-  else
-  {
-    // move the tail_ up by 1 (tail_ since this is push_back)
-    // now that tail_ has been moved up once, access the updated tail_'s index in the T* data_
-    // update this new tail's element to be the item
-    // update size_ by 1 since we just pushed an item
-    tail_ = (tail_ + 1);
-    data_[tail_] = item;
-    size_++;
-  }
+  // move the tail_ up by 1 (tail_ since this is push_back)
+  // now that tail_ has been moved up once, access the updated tail_'s index in the T* data_
+  // update this new tail's element to be the item
+  // update size_ by 1 since we just pushed an item
+    
+  this->data_[this->tail_] = item;
+  this->tail_++;
+  this->size_++;
 }
 
 // DOES NOT WORK
@@ -235,40 +250,34 @@ template <typename T>
 void Deque<T>::push_front(const T& item)
 {
   // checks if deque is already full
-  while(size_ == capacity_)
+  if(this->size_ == this->capacity_)
   {
     // create new temporary deque
-    T* temp = new T[capacity_ + 5];
+    size_t new_capacity_ = this->capacity_ + 5;
+    T* new_data_ = new T[new_capacity_];
 
     // copy old deque data into temporary deque.
-    for(unsigned int i = 0; i < capacity_; i++)
+    for(int i = this->head_; i < this->tail_; i++)
     {
-      temp[i] = data_[(head_ + i)];
+      // two new indexes are defined for the copying of data_ into new_data_
+      // since data_ and new_data_ have different sized capacities, they have different indexes based on their capacities and the circular nature of the deque
+      // for these reasons, two indexes must be found, one for the old capacity for data_ and one for the new capacity for new_data_
+      size_t old_idx = (i + this->capacity_) % this->capacity_;
+      size_t new_idx = (i + new_capacity_) % new_capacity_;
+      new_data_[new_idx] = this->data_[old_idx];
     }
 
-    data_ = temp;
-    capacity_ += 5;
+    this->data_ = new_data_;
+    this->capacity_ = new_capacity_;
   }
 
-  // off set the existing data_ by 1 in order to create room for
-  // the new head and pushed value
-  int i = size_;
-  while(i--)
-  {
-    data_[i + 1] = data_[i];
-  }
-
-  for(int i = 0; i < size_; i++)
-  {
-    data_[i] += 1;
-  }
-
-  // when deque is either not full or updated
-  // update head_'s spot to create a spot for item in the front
-  // push item into front spot (push_front), then update size_
-  head_ = (head_ - 1) % capacity_;
-  data_[head_] = item;
-  size_++;
+  // first, set head to one index before it
+  // since head_ will never be within the proper boundaries and will go past into the circular part of the array
+  // modify it the same way the indexes above have been modified
+  this->head_ = this->head_ - 1;
+  int mod_head = (this->head_ + capacity_) % capacity_;
+  this->data_[mod_head] = item;
+  this->size_++;
 }
 
 // FIXED
@@ -288,7 +297,7 @@ void Deque<T>::pop_back()
 
   // now that size_ is essentialy size_ - 1, move the tail_ down with the size_
   // this will automatically pop whatever was at the initial size_ tail_
-  tail_ = size_;
+  this->tail_ = this->size_;
 }
 
 
@@ -307,7 +316,7 @@ void Deque<T>::pop_front()
   // pushes the entire head up by 1
   // doing so automatically gets rid of whatever was initially sitting at the original head_
   // decrement size now that the front has been popped
-  head_ = (head_ + 1);
-  size_--;
+  this->head_++;
+  this->size_--;
 }
 #endif
