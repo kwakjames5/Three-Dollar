@@ -20,23 +20,16 @@
 
 int swap(int x, int length)
 {
-	int bit[length];
-	int counter = 0;
-
-	while(x > 0)
-	{
-		bit[counter] = x%2;
-		x = x/2;
-		counter++;
-	}
-
-	int idx = 0;
 	int return_val = 0;
 
-	for(int i = length - 1; i >= 0; i--)
+	for(int i = 0; i < length; i++)
 	{
-		return_val += bit[idx] * pow(2, i);
-		idx++;
+		if(x > 0)
+		{
+			int temp = x%2;
+			x = x/2;
+			return_val += temp * pow(2, length - i - 1);
+		}
 	}
 
 	return return_val;
