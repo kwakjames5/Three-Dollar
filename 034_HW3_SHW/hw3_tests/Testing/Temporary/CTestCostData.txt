@@ -1,0 +1,92 @@
+AndTest.NoHashTags 0 0
+AndTest.MissingHashTags 1 1.46462
+AndTest.TwoHashTags 0 0
+AndTest.OneHashTags 0 0
+OrTest.NoHashTags 1 1.43733
+OrTest.MissingHashTags 1 1.44983
+OrTest.TwoHashTags 0 0
+OrTest.OneHashTags 0 0
+OrTest.DoubleTags 0 0
+AndTest.DoubleTags 0 0
+SearchRuntime.And 1 4.63021
+SearchRuntime.Or 1 4.29936
+AndHandlerTest.CanHandle 1 1.24841
+AndHandlerTest.ProcessAndOneHashtag 1 1.55517
+AndHandlerTest.ProcessAndTwoHashtags 1 1.60864
+AndHandlerTest.ProcessAndManyHashtag 1 1.61446
+AndHandlerTest.ProcessAndNoResults 1 1.53969
+OrHandlerTest.CanHandle 1 1.26371
+OrHandlerTest.ProcessOrOneHashtag 1 1.58171
+OrHandlerTest.ProcessOrTwoHashtags 1 1.6246
+OrHandlerTest.ProcessOrManyHashtag 1 1.73933
+OrHandlerTest.ProcessOrNoResults 1 1.52786
+TweetHandlerTest.CanHandle 1 1.23212
+TweetHandlerTest.AddTweetThenSearch 1 1.75385
+TweetHandlerTest.AddTweetInvalidUser 1 1.44666
+TweetHandlerTest.CaseInsensitiveHashtagTest 1 1.72761
+Constructor.BlankString 1 1.35877
+Constructor.NormalString 1 1.38845
+Feed.NotFollowing 1 1.29573
+Feed.FollowingButNoTweets 1 1.30982
+Feed.Small 1 1.38532
+Feed.Medium 1 1.36782
+Feed.Large 1 1.39123
+Follower.NewUser 1 1.2996
+Follower.UserAlreadyInSet 1 1.3104
+Following.NewUser 1 1.2996
+Following.UserAlreadyInSet 1 1.31166
+Tweets.BlankTweet 1 1.30992
+Tweets.NormalTweet 1 1.33726
+Tweets.ListTweets 1 1.36133
+TweetComparator.LessThanIsTrue 1 1.34231
+TweetComparator.LessThanIsFalse 1 1.31204
+TweetComparator.BothAreEqual 0 0
+TweetConstructor.Default 0 0
+TweetConstructor.NoText 1 1.31623
+TweetConstructor.WithText 1 1.343
+OStream.EmptyTweet 0 0
+OStream.ShortTweet 0 0
+OStream.LongTweet 0 0
+DateTimeComparator.LessThanIsTrue 1 1.30733
+DateTimeComparator.LessThanIsFalse 1 1.2839
+DateTimeComparator.BothAreEqual 1 1.29649
+DateTimeConstructor.Default 0 0
+DateTimeConstructor.Alt 1 1.27475
+IStream.ProperFormat 1 1.27127
+IStream.ImproperFormat 1 1.27283
+OStream.Default 0 0
+OStream.Normal 1 1.26747
+Parse.Empty 0 0
+Parse.FileDoesNotExist 0 0
+Parse.ImproperFormat 1 1.24737
+Parse.Short 0 0
+Parse.Medium 0 0
+Parse.Long 0 0
+AddTweet.NoText 0 0
+AddTweet.AddShort 0 0
+AddTweet.AddMedium 0 0
+AddTweet.AddLong 0 0
+---
+AndTest.NoHashTags
+AndTest.TwoHashTags
+AndTest.OneHashTags
+OrTest.TwoHashTags
+OrTest.OneHashTags
+OrTest.DoubleTags
+AndTest.DoubleTags
+TweetComparator.BothAreEqual
+TweetConstructor.Default
+OStream.EmptyTweet
+OStream.ShortTweet
+OStream.LongTweet
+DateTimeConstructor.Default
+OStream.Default
+Parse.Empty
+Parse.FileDoesNotExist
+Parse.Short
+Parse.Medium
+Parse.Long
+AddTweet.NoText
+AddTweet.AddShort
+AddTweet.AddMedium
+AddTweet.AddLong
