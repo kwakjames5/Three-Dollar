@@ -47,7 +47,7 @@ class TwitEng
  private:
   /* Add any other data members or helper functions here  */
   std::list<Tweet*> tweets_;
-  std::map<std::string, User*> masterUsers_;
+  std::map<std::string, User*> master_users;
   std::map<std::string, std::set<Tweet*>> masterHashtags_;
 
 

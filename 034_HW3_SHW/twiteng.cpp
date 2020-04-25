@@ -18,13 +18,26 @@ TwitEng::~TwitEng()
 {
 	// iterates through the map of users and deletes every user
 	
-    for(std::map<std::string, User*>::iterator it = masterUsers_.begin();
-     it != masterUsers_.end(); it++)
+    for(std::map<std::string, User*>::iterator it = master_users.begin();
+     it != master_users.end(); it++)
     {
     	delete it->second;
     }
 }
 
+/*
+	INFILE FORMAT:
+	Number of users
+	Followed by names (Same number as number of users from first line)
+		First name is unique user
+		Following names are following users
+		this means the first named user is following the users named afterwards
+		ex) James Joe Bob
+		James is the first user
+		Joe and Bob are the users that James follows
+		Joe and Bob are followed by James
+	Actual Tweets (YYYY-MM-DD HH:MM:SS Username Tweet) (Tweets may contain @ and #)
+*/
 bool TwitEng::parse(char* filename)
 {
 	std::ifstream ifile(filename);
@@ -34,6 +47,131 @@ bool TwitEng::parse(char* filename)
 		return 0;
 	}
 
+	// first thing in the in file is the user count
+	// store it
+	int user_count;
+	ifile >> user_count;
+
+	// line is for each individual line of names
+	std::string line;
+
+	// iterate for number of users
+	for(int i = 0; i <= user_count; i++)
+	{
+		// get the line of names and put string stream to go through it
+		getline(ifile, line);
+		std::stringstream ss(line);
+
+		// string for first user name
+		std::string new_user;
+		ss >> new_user;
+
+		// if the user is not yet registered
+		if(master_users.find(new_user) == master_users.end())
+		{
+			// create a new user with username as the name
+			User* user = new User(new_user);
+
+			// insert a pair of username and the newly created user into the master_users map
+			master_users.insert(std::pair<std::string, User*>(new_user, user));
+		}
+
+		// string for following names after the first user name
+		std::string following;
+
+		// run string stream to the end, meaning cover every following name after the first name
+		while(ss >> following)
+		{
+			// we must check if any of the following names are unique
+			// if the following name has already been registered, no need to register a new user
+			if(master_users.find(following) != master_users.end())
+			{
+				// add a following to new_user in map master_users
+				// this following must be another user in the map
+				// find the following user in the master_users map
+				// ->second is to make sure to add the actual User* in the map
+				// and not the username string from the map, which would be ->first
+				master_users[new_user]->addFollowing(master_users.find(following)->second);
+			}
+			else
+			{
+				// for when the following names have not been registered yet
+				// create a new user and insert it into the master_users map
+				// then, add a follow from first user to this newest user
+				User* new_following = new User(following);
+				master_users.insert(std::pair<std::string, User*>(following, new_following));
+				master_users[new_user]->addFollowing(new_following);
+			}
+		}
+
+	}
+
+	// user and tweet strings that will be used to store user and tweet strings in the tweet lines
+	std::string user;
+	std::string tweet;
+
+	// run until the end of the infile now that all of the users have been registered and followed
+	// only the tweet lines remain
+	// Actual Tweets (YYYY-MM-DD HH:MM:SS Username Tweet) (Tweets may contain @ and #)
+	while(!ifile.eof())
+	{
+		// temporary storage string
+		std::string temp;
+
+		int yr, mon, day, hr, min, sec;
+
+		// read up to the YYYY
+		getline(ifile, temp, '-');
+		std::stringstream ss(temp);
+		ss >> yr;
+
+		// read up to the MM
+		getline(ifile, temp, '-');
+		std::stringstream st(temp);
+		ss >> mon;
+
+		// read up to the DD
+		getline(ifile, temp, ' ');
+		std::stringstream su(temp);
+		ss >> day;
+
+		// read up to the HH
+		getline(ifile, temp, ':');
+		std::stringstream sv(temp);
+		ss >> hr;
+
+		// read up to the MM
+		getline(ifile, temp, ':');
+		std::stringstream sw(temp);
+		ss >> min;
+
+		// read up to the SS
+		getline(ifile, temp, ' ');
+		std::stringstream sx(temp);
+		ss >> sec;
+
+		DateTime dt(hr, min, sec, yr, mon, day);
+
+		ifile >> user;
+		getline(ifile, tweet);
+
+		//addTweet(user, dt, tweet);
+
+		// addTweet has a segmentation fault
+		// that needs to be fixed for this parse function to be complete
+		// once all of the users have been registered and followed accordingly
+		// the function parses through the tweet lines individually
+		// stores the datetime, username and tweet
+		// and uses these stores to addTweet, which is supposed to be the function
+		// which literally adds the tweet to tweets_
+		
+	}
+	
+
+	
+
+	return false;
+	/*
 	// initial userCount
 	int userCount = 0;
 
@@ -141,19 +279,20 @@ bool TwitEng::parse(char* filename)
     	}
   	}   
   	return false;
+  	*/
 }
 
 void TwitEng::addTweet(const std::string& username, const DateTime& time, const std::string& text)
 {
 	// username + tweet
 	std::map<std::string, User*>::iterator it;
-  	it = masterUsers_.find(username);
-  	if(it==masterUsers_.end())
+  	it = master_users.find(username);
+  	if(it==master_users.end())
   	{
     	throw std::out_of_range("Username not found");
   	}
   	
-  	User *newUser = masterUsers_.find(username)->second;
+  	User *newUser = master_users.find(username)->second;
   	Tweet *newTweet = new Tweet(newUser, time, text);
 
   	std::set<std::string> temp = newTweet->hashTags();
@@ -178,10 +317,10 @@ void TwitEng::addTweet(const std::string& username, const DateTime& time, const 
   	newUser->addTweet(newTweet);
 	
 	// hashtags
-	for(int i = 0; (unsigned) i < masterUsers_.size(); i++)
+	for(int i = 0; (unsigned) i < master_users.size(); i++)
 	{
-		for(std::map<std::string, User*>::iterator it = masterUsers_.begin();
-		it != masterUsers_.end(); it++)
+		for(std::map<std::string, User*>::iterator it = master_users.begin();
+		it != master_users.end(); it++)
 		{
 			if(username == it->first)
 			{
@@ -259,8 +398,8 @@ std::vector<Tweet*> TwitEng::search(std::vector<std::string>& terms, int strateg
 
 void TwitEng::dumpFeeds()
 {
-	for(std::map<std::string, User*>::iterator it = masterUsers_.begin(); 
-	it != masterUsers_.end(); it++)
+	for(std::map<std::string, User*>::iterator it = master_users.begin(); 
+	it != master_users.end(); it++)
 	{
 		std::ofstream ofile;
 		std::string name = it->first;
@@ -277,6 +416,7 @@ void TwitEng::dumpFeeds()
 	}
 }
 
+/*
 void TwitEng::addFollowing(std::string name_of_follower, std::string name_to_follow)
 {
 	// iterator for follower
@@ -365,3 +505,4 @@ void TwitEng::make_scc(std::string filename)
 {
 	std::cout << "Did not have time to complete" << std::endl;
 }
+*/
