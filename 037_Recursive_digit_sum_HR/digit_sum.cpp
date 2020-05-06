@@ -9,6 +9,8 @@
     superDigit(p) = superDigit(8)
 */
 
+// link: https://www.hackerrank.com/challenges/recursive-digit-sum/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=recursion-backtracking
+
 #include <bits/stdc++.h>
 
 using namespace std;
