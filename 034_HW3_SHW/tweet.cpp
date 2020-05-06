@@ -9,21 +9,26 @@
 #include "user.h"
 #include "util.h"
 
+// IMPORTANT FOR TwitEng::addTweet()
 Tweet::Tweet()
 {
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 Tweet::Tweet(User* user, const DateTime& time, const std::string& text)
 {
 	// creates a tweet object given the user, datetime and also parses through the text's words and checks for hashtags
 	// if a hashtag is in the text, it pushes that hashtag withouth the # into hashtags_
 	user_ = user;
+	/*
 	time_.year = time.year;
     time_.month = time.month;
     time_.day = time.day;
     time_.hour = time.hour;
     time_.min = time.min;
     time_.sec = time.sec;
+    */
+    time_ = time;
 	text_ = text;
 
 	std::string temp;
@@ -34,11 +39,15 @@ Tweet::Tweet(User* user, const DateTime& time, const std::string& text)
       {
         temp.erase(temp.begin());
         convLower(temp);
-        hashtags_.insert(temp);
+        if(hashtags_.find(temp) == hashtags_.end())
+        {
+        	hashtags_.insert(temp);
+        }
       }
     }
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 DateTime const & Tweet::time() const
 {
 	// returns datetime
@@ -77,11 +86,12 @@ bool Tweet::operator<(const Tweet& other) const
 
 	return true;
 }
-  
+ 
+// IMPORTANT FOR TwitEng::addTweet() 
 std::ostream& operator<<(std::ostream& os, const Tweet& t)
 {
 	// pushes into the oufile the date, time, username and text of the tweet
-	os << t.time_ << t.user_ << t.text_;
+	os << t.time() << t.user() << t.text();
 	return os;
 }
 

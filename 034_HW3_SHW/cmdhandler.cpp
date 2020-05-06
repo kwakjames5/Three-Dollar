@@ -2,23 +2,27 @@
 #include "util.h"
 using namespace std;
 
+// IMPORTANT FOR TwitEng::addTweet()
 QuitHandler::QuitHandler()
 {
 
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 QuitHandler::QuitHandler(Handler* next)
   : Handler(next)
 {
 
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 bool QuitHandler::canHandle(const std::string& cmd) const
 {
 	return cmd == "QUIT";
 
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 Handler::HANDLER_STATUS_T QuitHandler::process(TwitEng* eng, std::istream& instr) const
 {
 	eng->dumpFeeds();
@@ -43,15 +47,15 @@ bool AndHandler::canHandle(const std::string& cmd) const
 
 Handler::HANDLER_STATUS_T AndHandler::process(TwitEng* eng, std::istream& instr) const
 {
-	std::vector<std::string> searchTerms;
-	std::string temp;
+	vector<string> searchTerms;
+	string temp;
 
 	while(instr >> temp)
 	{
 		searchTerms.push_back(temp);
 	}
 
-	std::vector<Tweet*> searchResults = eng->search(searchTerms, 0);
+	vector<Tweet*> searchResults = eng->search(searchTerms, 0);
 	displayHits(searchResults);
 
 	return HANDLER_OK;

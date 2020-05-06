@@ -28,3 +28,6 @@ clean:
 	rm twitter;
 	rm -rf ./*.o
 	rm -rf ./*.feed
+
+clean_feed:
+	rm -rf ./*.feed

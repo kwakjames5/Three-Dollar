@@ -14,6 +14,7 @@ TwitEng::TwitEng()
 {
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 TwitEng::~TwitEng()
 {
 	// iterates through the map of users and deletes every user
@@ -38,6 +39,8 @@ TwitEng::~TwitEng()
 		Joe and Bob are followed by James
 	Actual Tweets (YYYY-MM-DD HH:MM:SS Username Tweet) (Tweets may contain @ and #)
 */
+
+// IMPORTANT FOR TwitEng::addTweet()
 bool TwitEng::parse(char* filename)
 {
 	std::ifstream ifile(filename);
@@ -125,37 +128,60 @@ bool TwitEng::parse(char* filename)
 		std::stringstream ss(temp);
 		ss >> yr;
 
+		std::cout << yr << std::endl;
+
 		// read up to the MM
 		getline(ifile, temp, '-');
 		std::stringstream st(temp);
-		ss >> mon;
+		st >> mon;
+
+		std::cout << mon << std::endl;
 
 		// read up to the DD
 		getline(ifile, temp, ' ');
 		std::stringstream su(temp);
-		ss >> day;
+		su >> day;
+
+		std::cout << day << std::endl;
 
 		// read up to the HH
 		getline(ifile, temp, ':');
 		std::stringstream sv(temp);
-		ss >> hr;
+		sv >> hr;
+
+		std::cout << hr << std::endl;
 
 		// read up to the MM
 		getline(ifile, temp, ':');
 		std::stringstream sw(temp);
-		ss >> min;
+		sw >> min;
+
+		std::cout << min << std::endl;
 
 		// read up to the SS
 		getline(ifile, temp, ' ');
 		std::stringstream sx(temp);
-		ss >> sec;
+		sx >> sec;
+
+		std::cout << sec << std::endl;
 
 		DateTime dt(hr, min, sec, yr, mon, day);
 
-		ifile >> user;
+		//original:
+		//ifile >> user;
+		
+		getline(ifile, user, ' ');
+		
 		getline(ifile, tweet);
 
-		//addTweet(user, dt, tweet);
+		// TEST LINE TO CHECK TWEETS WHEN THEY ARE BEING PARSED
+		//std::cout << tweet << std::endl;
+
+		// TEST LINE TO CHECK real_tweet
+		//std::string real_tweet = tweet.substr(1);
+		//std::cout << real_tweet << std::endl;
+
+		addTweet(user, dt, tweet);
 
 		// addTweet has a segmentation fault
 		// that needs to be fixed for this parse function to be complete
@@ -282,8 +308,34 @@ bool TwitEng::parse(char* filename)
   	*/
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 void TwitEng::addTweet(const std::string& username, const DateTime& time, const std::string& text)
 {
+	// tweet_user is the user object of the username that is passed in
+	// tweet is a new Tweet object made using the parameters
+	User* tweet_user = master_users.find(username)->second;
+	Tweet* tweet =  new Tweet(tweet_user, time, text);
+	tweet_user->addTweet(tweet);
+
+	std::stringstream ss(text);
+	std::string temp;
+
+	/*while(ss >> temp)
+	{
+		
+	}*/
+
+	tweets_.push_back(tweet);
+	std::set<std::string> hashtags = tweet->hashTags();
+	for(std::set<std::string>::iterator it = hashtags.begin(); it != hashtags.end(); it++)
+	{
+		master_hashtags[*it].insert(tweet);
+	}
+	
+
+
+
+	/*
 	// username + tweet
 	std::map<std::string, User*>::iterator it;
   	it = master_users.find(username);
@@ -345,7 +397,7 @@ void TwitEng::addTweet(const std::string& username, const DateTime& time, const 
 			}
 		}
 	}
-
+	*/
 
 }
 
@@ -357,7 +409,7 @@ std::vector<Tweet*> TwitEng::search(std::vector<std::string>& terms, int strateg
 
 	if(strategy == 0) // AND // NOT WORKING
 	{
-		temp = masterHashtags_[terms[0]];
+		temp = master_hashtags[terms[0]];
 		std::set<Tweet*> store;
 
 		for(int i = 1; (unsigned) i < terms.size(); i++)
@@ -365,7 +417,7 @@ std::vector<Tweet*> TwitEng::search(std::vector<std::string>& terms, int strateg
 			for(std::set<Tweet*>::iterator it = temp.begin(); 
 			it != temp.end(); it++)
 			{
-    			if(!(masterHashtags_[terms[i]].find(*it) == masterHashtags_[terms[i]].end()))
+    			if(!(master_hashtags[terms[i]].find(*it) == master_hashtags[terms[i]].end()))
     			{
       				store.insert(*it);
     			}
@@ -382,10 +434,10 @@ std::vector<Tweet*> TwitEng::search(std::vector<std::string>& terms, int strateg
 		for(std::vector<std::string>::iterator it = terms.begin(); 
 		it != terms.end(); it++)
 		{
-			if(!(masterHashtags_.find(*it) == masterHashtags_.end()))
+			if(!(master_hashtags.find(*it) == master_hashtags.end()))
 			{
-				for(std::set<Tweet*>::iterator it1 = masterHashtags_.find(*it)->second.begin();
-				it1 != masterHashtags_.find(*it)->second.end(); it1++)
+				for(std::set<Tweet*>::iterator it1 = master_hashtags.find(*it)->second.begin();
+				it1 != master_hashtags.find(*it)->second.end(); it1++)
 				{
 					trueVector.push_back(*it1);
 				}
@@ -396,8 +448,40 @@ std::vector<Tweet*> TwitEng::search(std::vector<std::string>& terms, int strateg
 	return trueVector;
 }
 
+// this is what is called when user uses QUIT
+// this function should create the outfiles for each individual users feeds
+// IMPORTANT FOR TwitEng::addTweet()
 void TwitEng::dumpFeeds()
 {
+	// iterate through the master_users map
+	for(std::map<std::string, User*>::iterator it = master_users.begin(); it != master_users.end(); it++)
+	{
+		// feed is the current user's feed
+		// get feed is all of the user tweets along with following's tweets
+		std::vector<Tweet*> feed = (it->second->getFeed());
+
+		// create the ofile for this user's feed
+		std::string name = it->first + ".feed";
+		std::ofstream ofile(name);
+
+		// pushes the name of the user at the top of the feed
+		ofile << it->first << "'s feed" << std::endl;
+
+		for(unsigned int i= 0; i < feed.size(); i++)
+		{
+			ofile << feed[i]->time() << " " << feed[i]->user()->name() << " " << feed[i]->text() << std::endl;
+
+			// TEST LINE TO CHECK WHAT IS IN feed[i]
+			//std::cout << feed[i]->text() << "slingo" <<  std::endl; 
+		}
+
+		/*for(std::vector<Tweet*>::iterator feed_it = feed.begin(); feed_it != feed.end(); feed_it++)
+		{
+			ofile << (*feed_it)->time() << " " << (*feed_it)->user()->name() << " " << (*feed_it)->text() << std::endl;	
+		}
+		*/
+	}
+	/*
 	for(std::map<std::string, User*>::iterator it = master_users.begin(); 
 	it != master_users.end(); it++)
 	{
@@ -414,6 +498,7 @@ void TwitEng::dumpFeeds()
 			ofile << *(feed.at(i)) << std::endl;
 		}
 	}
+	*/
 }
 
 /*

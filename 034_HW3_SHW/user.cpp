@@ -8,6 +8,7 @@
 #include "tweet.h"
 #include "user.h"
 
+// IMPORTANT FOR TwitEng::addTweet()
 User::User(std::string name)
 {
 	// sets username
@@ -32,6 +33,7 @@ std::string User::name() const
 	return name_;
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 std::set<User*> User::followers() const
 {
 	// returns followers
@@ -39,6 +41,7 @@ std::set<User*> User::followers() const
 	return followers_;
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 std::set<User*> User::following() const
 {
 	// returns following
@@ -46,6 +49,7 @@ std::set<User*> User::following() const
 	return following_;
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 std::list<Tweet*> User::tweets() const
 {
 	// returns tweets
@@ -59,18 +63,21 @@ void User::addFollower(User* u)
 	followers_.insert(u);
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 void User::addFollowing(User* u)
 {
 	// addes the User* u into the following set of users
 	following_.insert(u);
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 void User::addTweet(Tweet* t)
 {
 	// pushes back whatever tweet we want into the user's tweet set
 	tweets_.push_back(t);
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 std::vector<Tweet*> User::getFeed()
 {
 	// supposed to get any given user's feed given their own tweets (?) and their following's tweets

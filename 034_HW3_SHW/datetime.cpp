@@ -7,10 +7,12 @@
 /**
  * Models a timestamp in format YYYY-MM-DD HH:MM:SS 
  */
+// IMPORTANT FOR TwitEng::addTweet()
 DateTime::DateTime()
 {
 }
 
+// IMPORTANT FOR TwitEng::addTweet()
 DateTime::DateTime(int hh, int mm, int ss, int year, int month, int day)
 {
 	hour = hh;
@@ -100,10 +102,15 @@ bool DateTime::operator<(const DateTime& other) const
    */
 std::ostream& operator<<(std::ostream& os, const DateTime& other)
 {
-	os << other.year << "-" << other.month << "-" << other.day;
-	os << " " << other.hour << ":" << other.min << ":" << other.sec;
+	os << other.year << "-" << other.month << "-" << other.day << " "
+	<< other.hour << ":" << other.min << ":" << other.sec;
 	return os;
+	
 
+	/*os << other.year << "-" << other.month << "-" << other.day << " " << 
+		other.hour << ":" << other.min << ":" << other.sec;
+	return os;
+	*/
 	// this one seems to be proper
 }
 
@@ -116,8 +123,59 @@ std::ostream& operator<<(std::ostream& os, const DateTime& other)
    *
    * @return the istream passed in as an argument
    */
+
+// IMPORTANT FOR TwitEng::addTweet()
 std::istream& operator>>(std::istream& is, DateTime& dt)
 {
+	std::stringstream ssline;
+	std::string line; 
+	getline(is, line, '-');
+	ssline.str(line);
+	if(ssline.fail()){
+
+		DateTime temp;
+		dt = temp;
+		return is;
+	}
+	getline(is,line, '-');
+	ssline.str(line);
+	ssline >> dt.month;
+	if(ssline.fail()){
+		DateTime temp;
+		dt = temp;
+		return is;
+	}
+	//getline(is,line, ' ');
+	is >> line;
+	ssline.str(line);
+	ssline >> dt.day;
+	if(ssline.fail()){
+		DateTime temp;
+		dt = temp;
+		return is;
+	}
+	getline(is, line, ':');
+	ssline.str(line);
+	ssline >> dt.hour;
+	if(ssline.fail()){
+		DateTime temp;
+		dt = temp;
+		return is;
+	}
+	getline(is, line, ':');
+	ssline.str(line);
+	ssline >> dt.min;
+	if(ssline.fail()){
+		DateTime temp;
+		dt = temp;
+		return is;
+	}
+	getline(is, line, ' ');
+	ssline.str(line);
+	ssline >> dt.sec;
+
+	return is;
+	/*
     std::string year;
 	std::string month;
 	std::string day;
@@ -153,4 +211,5 @@ std::istream& operator>>(std::istream& is, DateTime& dt)
 	// would dt.year = year work?? applies for all parts of time
 
 	return is;
+	*/
 }
