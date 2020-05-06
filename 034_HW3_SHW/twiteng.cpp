@@ -128,42 +128,42 @@ bool TwitEng::parse(char* filename)
 		std::stringstream ss(temp);
 		ss >> yr;
 
-		std::cout << yr << std::endl;
+		//std::cout << yr << std::endl;
 
 		// read up to the MM
 		getline(ifile, temp, '-');
 		std::stringstream st(temp);
 		st >> mon;
 
-		std::cout << mon << std::endl;
+		//std::cout << mon << std::endl;
 
 		// read up to the DD
 		getline(ifile, temp, ' ');
 		std::stringstream su(temp);
 		su >> day;
 
-		std::cout << day << std::endl;
+		//std::cout << day << std::endl;
 
 		// read up to the HH
 		getline(ifile, temp, ':');
 		std::stringstream sv(temp);
 		sv >> hr;
 
-		std::cout << hr << std::endl;
+		//std::cout << hr << std::endl;
 
 		// read up to the MM
 		getline(ifile, temp, ':');
 		std::stringstream sw(temp);
 		sw >> min;
 
-		std::cout << min << std::endl;
+		//std::cout << min << std::endl;
 
 		// read up to the SS
 		getline(ifile, temp, ' ');
 		std::stringstream sx(temp);
 		sx >> sec;
 
-		std::cout << sec << std::endl;
+		//std::cout << sec << std::endl;
 
 		DateTime dt(hr, min, sec, yr, mon, day);
 
