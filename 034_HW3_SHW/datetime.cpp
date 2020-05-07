@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cctype>
 #include <sstream>
+// NEW
+#include <ctime>
 #include <string>
 #include "datetime.h"
 
@@ -10,6 +12,19 @@
 // IMPORTANT FOR TwitEng::addTweet()
 DateTime::DateTime()
 {
+	// Got this from friend
+	// provided by teacher
+	
+	time_t rawtime;
+	struct tm *locTime;
+	time(&rawtime);
+	locTime = localtime(&rawtime);
+	hour = locTime->tm_hour;
+	min = locTime->tm_min;
+	sec = locTime->tm_sec;
+	day = locTime->tm_mday;
+	month = locTime->tm_mon;
+	year = locTime->tm_year + 1900; 
 }
 
 // IMPORTANT FOR TwitEng::addTweet()
@@ -35,11 +50,13 @@ bool DateTime::operator<(const DateTime& other) const
 	// "<" means younger
 	// aka date1 < date2 means date1 happened more recently
 
+
+	// THERE WAS A TYPO HERE...
 	if(this->year < other.year) 
 	{ 
 		return true; 
 	} 
-	else if(other.year > this->year)
+	else if(other.year < this->year)
 	{
 		return false;
 	}

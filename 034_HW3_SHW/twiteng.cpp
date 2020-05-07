@@ -315,15 +315,18 @@ void TwitEng::addTweet(const std::string& username, const DateTime& time, const 
 	// tweet is a new Tweet object made using the parameters
 	User* tweet_user = master_users.find(username)->second;
 	Tweet* tweet =  new Tweet(tweet_user, time, text);
+
 	tweet_user->addTweet(tweet);
 
+	/*
 	std::stringstream ss(text);
 	std::string temp;
 
-	/*while(ss >> temp)
+	while(ss >> temp)
 	{
 		
-	}*/
+	}
+	*/
 
 	tweets_.push_back(tweet);
 	std::set<std::string> hashtags = tweet->hashTags();
@@ -331,9 +334,6 @@ void TwitEng::addTweet(const std::string& username, const DateTime& time, const 
 	{
 		master_hashtags[*it].insert(tweet);
 	}
-	
-
-
 
 	/*
 	// username + tweet

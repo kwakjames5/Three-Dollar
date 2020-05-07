@@ -112,12 +112,24 @@ bool TweetHandler::canHandle(const std::string& cmd) const
 Handler::HANDLER_STATUS_T TweetHandler::process(TwitEng* eng, std::istream& instr) const
 {
 	std::string name;
+	// getline(instr, name, ' ');
 	instr >> name;
+
+	// test line
+	// std::cout << "NAME: " << name << std::endl;
+	
 	std::string text;
 	DateTime time;
 	
 	getline(instr, text);
-	eng->addTweet(name, time, text);
+
+	// test line
+	// std::cout << "TEXT: " << text << std::endl;
+
+	// since instr was extracted with a >> then a getline(), the text as it is includes a space
+	// since >> does not skip delimiters as getline() might
+	// because this space should not be there, add the text in starting from index 1
+	eng->addTweet(name, time, text.substr(1));
 	
 	return HANDLER_OK;
 }
