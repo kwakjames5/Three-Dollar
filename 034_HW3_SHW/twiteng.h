@@ -30,6 +30,8 @@ class TwitEng
    */
   void addTweet(const std::string& username, const DateTime& time, const std::string& text);
 
+  std::set<Tweet*> and_(std::set<Tweet*>& a, std::set<Tweet*>& b);
+
   /**
    * Searches for tweets with the given words and strategy
    * @param words is the hashtag terms in any case without the '#'

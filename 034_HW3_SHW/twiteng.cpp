@@ -401,14 +401,50 @@ void TwitEng::addTweet(const std::string& username, const DateTime& time, const 
 
 }
 
+std::set<Tweet*> TwitEng::and_(std::set<Tweet*>& a, std::set<Tweet*>& b)
+{
+	std::set<Tweet*> temp;
+	for(std::set<Tweet*>::iterator it = a.begin(); 
+	it != a.end(); it++)
+	{
+		if(b.find(*it) != b.end())
+		{
+			temp.insert(*it);
+		}
+	}
+
+	return temp;
+}
+
 std::vector<Tweet*> TwitEng::search(std::vector<std::string>& terms, int strategy)
 {
 	std::vector<Tweet*> trueVector;
 	std::set<Tweet*> temp;
 
+	// strategy 0 is intersection / and
+	// only the shared area on a venn diagram
+	// strategy 1 is union / or
+	// in either one or both
 
-	if(strategy == 0) // AND // NOT WORKING
+	if(strategy == 0) // AND // NOT WORKING 
 	{
+		// an intersection of the first two terms
+		temp = and_(master_hashtags.find(terms[0])->second, master_hashtags.find(terms[1])->second);
+
+		if(terms.size() > 2)
+		{
+			for(unsigned int i = 2; i < terms.size(); i++)
+			{
+				temp = and_(temp, master_hashtags.find(terms[i])->second);
+			}
+		}
+
+		for(std::set<Tweet*>::iterator it = temp.begin(); it != temp.end(); it++)
+		{
+			trueVector.push_back(*it);
+		}
+		
+		/*
 		temp = master_hashtags[terms[0]];
 		std::set<Tweet*> store;
 
@@ -428,13 +464,14 @@ std::vector<Tweet*> TwitEng::search(std::vector<std::string>& terms, int strateg
 		{
 			trueVector.push_back(*it2);
 		}
+		*/
 	}
 	else if(strategy == 1) // OR
 	{
 		for(std::vector<std::string>::iterator it = terms.begin(); 
 		it != terms.end(); it++)
 		{
-			if(!(master_hashtags.find(*it) == master_hashtags.end()))
+			if(master_hashtags.find(*it) != master_hashtags.end())
 			{
 				for(std::set<Tweet*>::iterator it1 = master_hashtags.find(*it)->second.begin();
 				it1 != master_hashtags.find(*it)->second.end(); it1++)

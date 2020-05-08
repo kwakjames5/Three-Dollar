@@ -66,6 +66,8 @@ class Tweet
      necessary */
 
   User* user() const;
+  
+  //std::string const username() const;
 
   /* You may add other member functions */
  private:

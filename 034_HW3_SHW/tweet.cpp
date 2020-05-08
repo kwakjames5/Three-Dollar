@@ -86,14 +86,15 @@ bool Tweet::operator<(const Tweet& other) const
 
 	return true;
 }
- 
-// IMPORTANT FOR TwitEng::addTweet() 
-std::ostream& operator<<(std::ostream& os, const Tweet& t)
+
+/*
+std::string const Tweet::username() const
 {
-	// pushes into the oufile the date, time, username and text of the tweet
-	os << t.time() << t.user() << t.text();
-	return os;
+	//returns user 
+
+	return this->user_->name();
 }
+*/
 
 User* Tweet::user() const
 {
@@ -101,3 +102,15 @@ User* Tweet::user() const
 
 	return user_;
 }
+ 
+// IMPORTANT FOR TwitEng::addTweet() 
+std::ostream& operator<<(std::ostream& os, const Tweet& t)
+{
+	// pushes into the oufile the date, time, username and text of the tweet
+	os << t.time() << " " << t.user()->name() << " " << t.text();
+
+	//TEST LINE
+	//std::cout << t.user() << std::endl;
+	return os;
+}
+
