@@ -1,0 +1,11 @@
+Scanning dependencies of target hw3_tweet
+[ 16%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/util.cpp.o
+[ 33%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/tweet.cpp.o
+[ 33%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/twiteng.cpp.o
+[ 50%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/datetime.cpp.o
+[ 66%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/cmdhandler.cpp.o
+[ 66%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/handler.cpp.o
+[ 83%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/twitter.cpp.o
+[ 83%] Building CXX object tweet_tests/CMakeFiles/hw3_tweet.dir/home/cs104/Repositories/hw-kwakjame/hw3/user.cpp.o
+[100%] Linking CXX static library libhw3_tweet.a
+[100%] Built target hw3_tweet
