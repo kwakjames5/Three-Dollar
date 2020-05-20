@@ -21,7 +21,7 @@
     copy paste code into leetcode solver, 100% success result
 */
 
-ListNode* deleteDuplicates(ListNode* head) {
+ListNode* Solution::deleteDuplicates(ListNode* head) {
     if(head == NULL || head->next == NULL)
     {
         return head;
@@ -34,7 +34,6 @@ ListNode* deleteDuplicates(ListNode* head) {
     {
         if(first->val == second->val)
         {
-            first->val = first->next->val;
             first->next = first->next->next;
             second = second->next;
         }
@@ -45,10 +44,38 @@ ListNode* deleteDuplicates(ListNode* head) {
         }
     }
         
-       return head;
+    return head;
 }
 
 int main()
 {
+    int list_length;
+    std::cout << "Enter length of list: " << std::endl;
+    std::cin >> list_length;
 
+    int input;
+    std::cout << "Enter elements: " << std::endl;
+    std::cin >> input;
+    ListNode* head = new ListNode(input);
+
+    ListNode* temp = head;
+    for(int i = 1; i < list_length; i++)
+    {
+        std::cin >> input;
+        ListNode* temp2 = new ListNode(input);
+        temp->next = temp2;
+        temp = temp->next;
+    }
+
+    Solution* solution;
+    ListNode* solution_node = solution->deleteDuplicates(head);
+
+    std::cout << "Deleted duplicates: " << std::endl;
+    while(solution_node)
+    {
+        std::cout << solution_node->val << std::endl;
+        solution_node = solution_node->next;
+    }
+
+    return 0;
 }

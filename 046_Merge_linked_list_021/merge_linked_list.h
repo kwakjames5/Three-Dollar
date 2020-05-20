@@ -1,5 +1,5 @@
-#ifndef REVERSE_LINKED_LIST_H
-#define REVERSE_LINKED_LIST_H
+#ifndef MERGE_LINKED_LIST_H
+#define MERGE_LINKED_LIST_H
 #include <iostream>
 
 struct ListNode {
@@ -12,7 +12,7 @@ struct ListNode {
 
 class Solution {
 public:
-    ListNode* reverseList(ListNode* head);
+    ListNode* mergeTwoLists(ListNode* l1, ListNode* l2);
 };
 
 #endif

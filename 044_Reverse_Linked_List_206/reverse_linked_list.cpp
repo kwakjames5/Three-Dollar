@@ -48,5 +48,34 @@ ListNode* Solution::reverseList(ListNode* head)
 
 int main()
 {
+	int list_length;
+	std::cout << "Enter length of list: " << std::endl;
+	std::cin >> list_length;
 
+	int input;
+	std::cout << "Enter elements: " << std::endl;
+	std::cin >> input;
+	ListNode* head = new ListNode(input);
+
+	ListNode* temp = head;
+	for(int i = 1; i < list_length; i++)
+	{
+		std::cin >> input;
+		ListNode* temp2 = new ListNode(input);
+		temp->next = temp2;
+		temp = temp->next;
+	}
+
+	Solution* solution;
+	ListNode* solution_node = solution->reverseList(head);
+
+	std::cout << "Reverse: " << std::endl;
+	while(solution_node)
+	{
+		std::cout << solution_node->val << std::endl;
+		solution_node = solution_node->next;
+
+	}
+
+	return 0;
 }
