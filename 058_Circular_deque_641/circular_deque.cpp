@@ -20,7 +20,7 @@ MyCircularDeque::MyCircularDeque(int k) {
 bool MyCircularDeque::insertFront(int value) {
     if(size == cap)
     {
-        std::cout << "Deque is full" << std::endl;
+        std::cout << "Deque is full" << std::endl << std::endl;
         return false;
     }
     else
@@ -37,7 +37,7 @@ bool MyCircularDeque::insertFront(int value) {
 bool MyCircularDeque::insertLast(int value) {
     if(size == cap)
     {
-        std::cout << "Deque is full" << std::endl;
+        std::cout << "Deque is full" << std::endl << std::endl;
         return false;
     }
         
@@ -57,6 +57,7 @@ bool MyCircularDeque::deleteFront() {
         
     head = (head + 1) % cap;
     size--;
+    std::cout << std::endl;
     return true;
 }
     
@@ -69,6 +70,7 @@ bool MyCircularDeque::deleteLast() {
         
     tail = (tail - 1 + cap) % cap;
     size--;
+    std::cout << std::endl;
     return true;
 }
     
@@ -96,12 +98,12 @@ int MyCircularDeque::getRear() {
 bool MyCircularDeque::isEmpty() {
     if(size == 0)
     {
-        std::cout << "Is empty" << std::endl;
+        std::cout << "Is empty" << std::endl << std::endl;
         return true;
     }
     else
     {
-        std::cout << "Is not empty" << std::endl;
+        std::cout << "Is not empty" << std::endl << std::endl;
         return false;   
     }
 }
@@ -110,29 +112,97 @@ bool MyCircularDeque::isEmpty() {
 bool MyCircularDeque::isFull() {
     if(size == cap)
     {
-        std::cout << "Is full" << std::endl;
+        std::cout << "Is full" << std::endl << std::endl;
         return true;
     }
     else
     {
-        std::cout << "Is not full" << std::endl;
+        std::cout << "Is not full" << std::endl << std::endl;
         return false;
     }
 }
 
 int main()
 {
-    MyCircularDeque deque(3);
-    deque.isEmpty();
+    std::cout << "Enter capacity: " << std::endl;
+    int cap;
+    std::cin >> cap;
+    MyCircularDeque deque(cap);
 
-    deque.insertLast(1);
-    deque.insertLast(2);
-    deque.insertFront(3);
-    deque.insertFront(4);
+    int exit_flag = -1;
 
-    std::cout << "Rear: " << deque.getRear() << std::endl;
-    deque.isFull();
-    deque.deleteLast();
-    deque.insertFront(4);
-    deque.isFull();
+    while(exit_flag == -1)
+    {
+        std::cout << "OPTIONS: " << std::endl;
+        std::cout << "1: insertFront(num)" << std::endl;
+        std::cout << "2: insertLast(num)" << std::endl;
+        std::cout << "3: deleteFront()" << std::endl;
+        std::cout << "4: deleteLast()" << std::endl;
+        std::cout << "5: getFront()" << std::endl;
+        std::cout << "6: getRear()" << std::endl;
+        std::cout << "7: isEmpty()" << std::endl;
+        std::cout << "8: isFull()" << std::endl;
+        std::cout << "9: QUIT" << std::endl;
+        std::cout << std::endl;
+        std::cout << "Enter: " << std::endl;
+        int option;
+        std::cin >> option;
+
+        if(option == 1)
+        {
+            std::cout << std::endl;
+            std::cout << "Enter num to add: " << std::endl;
+            int input;
+            std::cin >> input;
+            deque.insertFront(input);
+        }
+
+        if(option == 2)
+        {
+            std::cout << std::endl;
+            std::cout << "Enter num to add: " << std::endl;
+            int input;
+            std::cin >> input;
+            deque.insertLast(input);
+        }
+
+        if(option == 3)
+        {
+            deque.deleteFront();
+        }
+
+        if(option == 4)
+        {
+            deque.deleteLast();
+        }
+
+        if(option == 5)
+        {
+            std::cout << "Front: " << deque.getFront() << std::endl << std::endl;
+        }
+
+        if(option == 6)
+        {
+            std::cout << "Rear: " << deque.getRear() << std::endl << std::endl;
+        }
+
+        if(option == 7)
+        {
+            deque.isEmpty();
+            std::cout << std::endl;
+        }
+
+        if(option == 8)
+        {
+            deque.isFull();
+            std::cout << std::endl;
+        }
+
+        if(option == 9)
+        {
+            exit_flag = 1;
+            break;
+        }
+    }
+
 }

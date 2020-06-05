@@ -24,7 +24,7 @@ bool MyCircularQueue::enQueue(int value) {
     }
     else if(head == tail)
     {
-    	std::cout << "Cannot add, queue full" << std::endl;
+    	std::cout << "Cannot add, queue full" << std::endl << std::endl;
         return false;
     }
     else
@@ -88,12 +88,12 @@ int MyCircularQueue::Rear() {
 bool MyCircularQueue::isEmpty() {
     if(head == -1)
     {
-    	std::cout << "Is empty" << std::endl;
+    	std::cout << "Is empty" << std::endl << std::endl;
         return true;
     }
     else
     {
-    	std::cout << "Is not empty" << std::endl;
+    	std::cout << "Is not empty" << std::endl << std::endl;
         return false;
     }
 }
@@ -102,34 +102,80 @@ bool MyCircularQueue::isEmpty() {
 bool MyCircularQueue::isFull() {
     if(head != -1 && head == tail)
     {
-    	std::cout << "Is full" << std::endl;
+    	std::cout << "Is full" << std::endl << std::endl;
         return true;
     }
     else
     {
-    	std::cout << "Is not full" << std::endl;
+    	std::cout << "Is not full" << std::endl << std::endl;
         return false;
     }
 }
 
 int main()
 {
-	MyCircularQueue queue(3);
+	std::cout << "Enter capacity: " << std::endl;
+	int cap;
+	std::cin >> cap;
+	MyCircularQueue queue(cap);
 
-	queue.isEmpty();
+	int exit_flag = -1;
 
-	queue.enQueue(1);
-	queue.enQueue(2);
-	queue.enQueue(3);
-	queue.enQueue(4);
+	while(exit_flag == -1)
+	{
+		std::cout << "OPTIONS: " << std::endl;
+		std::cout << "1: enQueue(num)" << std::endl;
+		std::cout << "2: deQueue()" << std::endl;
+		std::cout << "3: Front()" << std::endl;
+		std::cout << "4: Rear()" << std::endl;
+		std::cout << "5: isEmpty()" << std::endl;
+		std::cout << "6: isFull()" << std::endl;
+		std::cout << "7: QUIT" << std::endl;
+		std::cout << std::endl;
+		std::cout << "Enter: " << std::endl;
+		int option;
+		std::cin >> option;
 
-	std::cout << "Rear: " << queue.Rear() << std::endl;
-	
-	queue.isFull();
+		if(option == 1)
+		{
+			std::cout << std::endl;
+			std::cout << "Enter num to add: " << std::endl;
+			int input;
+			std::cin >> input;
+			queue.enQueue(input);
+			std::cout << std::endl;
+		}
 
-	queue.deQueue();
-	queue.enQueue(4);
+		if(option == 2)
+		{
+			queue.deQueue();
+		}
 
-	std::cout << "Rear: " << queue.Rear() << std::endl;
+		if(option == 3)
+		{
+			std::cout << "Front: " << queue.Front() << std::endl;
+		}
+
+		if(option == 4)
+		{
+			std::cout << "Rear: " << queue.Rear() << std::endl;
+		}
+
+		if(option == 5)
+		{
+			queue.isEmpty();
+		}
+
+		if(option == 6)
+		{
+			queue.isFull();
+		}
+
+		if(option == 7)
+		{
+			exit_flag = 1;
+			break;
+		}
+	}
 
 }
