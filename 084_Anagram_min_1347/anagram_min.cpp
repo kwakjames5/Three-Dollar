@@ -3,6 +3,15 @@
 #include <map>
 #include <iostream>
 
+// link: https://leetcode.com/problems/minimum-number-of-steps-to-make-two-strings-anagram/
+
+// date: 6/22/2020
+
+// description: given two strings, return the minimum number of changes to change the second string into an anagram of the first
+// ex) Input: s = "leetcode", t = "practice"
+// Output: 5
+// Explanation: Replace 'p', 'r', 'a', 'i' and 'c' from t with proper characters to make t anagram of s.
+
 int Solution::minSteps(std::string s, std::string t) 
 {
     std::map<char, int> s_char_track;
